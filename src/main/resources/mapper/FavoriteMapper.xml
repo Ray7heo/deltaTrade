@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.theo.deltaTrade.mapper.FavoriteMapper">
+
+    <resultMap id="BaseResultMap" type="com.theo.deltaTrade.entity.Favorite">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="commodityId" column="commodity_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <association property="commodity" column="commodity_id" javaType="com.theo.deltaTrade.entity.Commodity"
+                     select="selectCommodityById">
+        </association>
+    </resultMap>
+
+    <resultMap id="CommodityMap" type="com.theo.deltaTrade.entity.Commodity">
+        <result property="images" column="images" jdbcType="JAVA_OBJECT" javaType="java.util.List"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <association property="seller" column="seller_id" javaType="com.theo.deltaTrade.entity.User"
+                     select="selectUserById"/>
+    </resultMap>
+
+    <resultMap id="UserMap" type="com.theo.deltaTrade.entity.User"/>
+
+    <select id="selectCommodityById" resultMap="CommodityMap">
+        SELECT *
+        FROM commodity
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectUserById" resultMap="UserMap">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <sql id="Base_Column_List">
+        id
+        ,user_id,commodity_id,
+        create_time,update_time,is_delete
+    </sql>
+</mapper>

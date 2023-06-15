@@ -1,0 +1,4 @@
+server:
+  port: 443
+file:
+  dir: /home/theo/static/
